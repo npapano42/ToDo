@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
-    
+    tools:context=".CreateTaskActivity">
+
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tbHome"
+        android:id="@+id/tbCreateTask"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -17,30 +17,34 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reminderList"
+            android:text="@string/createTask"
             android:textSize="32sp"
             android:textColor="#FFFFFF"/>
+
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerTasks"
+    <EditText
+        android:id="@+id/etTaskName"
+        android:hint="@string/hintTaskName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tbCreateTask"
+        android:importantForAutofill="no"
+        android:inputType="textAutoCorrect" />
+
+    <DatePicker
+        android:id="@+id/dpTaskDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tbHome">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTaskName" />
 
-    </android.support.v7.widget.RecyclerView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddTask"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/bDone"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-
-        app:backgroundTint="@color/colorAccent"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="@string/DoneButton"
+        app:layout_constraintTop_toBottomOf="@id/dpTaskDate"/>
 
 </android.support.constraint.ConstraintLayout>

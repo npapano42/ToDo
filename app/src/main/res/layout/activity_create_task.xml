@@ -14,13 +14,6 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/createTask"
-            android:textSize="32sp"
-            android:textColor="#FFFFFF"/>
-
     </android.support.v7.widget.Toolbar>
 
     <EditText

@@ -2,8 +2,6 @@
     <string name="app_name">ToDo</string>
     <string name="hintTaskName">Name…</string>
     <string name="DoneButton">Done</string>
-    <string name="reminderList">Reminder List</string>
-    <string name="createTask">Create a task</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="appwidget_text">EXAMPLE</string>

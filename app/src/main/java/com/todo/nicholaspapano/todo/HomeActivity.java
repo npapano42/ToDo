@@ -24,6 +24,7 @@ public class HomeActivity extends AppCompatActivity
         rvTasks = findViewById(R.id.recyclerTasks);
 
         setSupportActionBar(tbHome);
+        getSupportActionBar().setTitle("Reminder List");
 
         addTask.setOnClickListener(new View.OnClickListener()
         {

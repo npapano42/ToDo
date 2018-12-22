@@ -13,6 +13,7 @@ public class CreateTaskActivity extends AppCompatActivity
     EditText taskName;
     DatePicker taskDate;
     Button bDone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -25,6 +26,7 @@ public class CreateTaskActivity extends AppCompatActivity
         bDone = findViewById(R.id.bDone);
 
         setSupportActionBar(tbCreateTask);
+        getSupportActionBar().setTitle("Create a task");
 
     }
 }

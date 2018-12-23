@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">ToDo</string>
-    <string name="hintTaskName">Name…</string>
+    <string name="blank"> </string>
+    <string name="edit">edit</string>
+    <string name="remove">remove</string>
+    <string name="taskName">Task Name:</string>
     <string name="DoneButton">Done</string>
+    <string name="bTaskTime">Select Reminder Time</string>
+    <string name="bTaskDate">Select Reminder Date</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="appwidget_text">EXAMPLE</string>

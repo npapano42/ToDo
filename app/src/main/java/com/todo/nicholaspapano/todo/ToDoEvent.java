@@ -1,9 +1,12 @@
 package com.todo.nicholaspapano.todo;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ToDoEvent implements Serializable
 {
@@ -33,11 +36,14 @@ public class ToDoEvent implements Serializable
         return eventID;
     }
 
-    //TODO: Implement, import cursor for SQLite
-//    public ToDoEvent getEventByID(int eventID, Context context)
-//    {
-//        return null;
-//    }
+    public ToDoEvent getEventByID(int eventID, Context context)
+    {
+        ToDoDB db = new ToDoDB(context);
+        Cursor cursor = db.selectEventByID(eventID);
+        LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(2));
+
+        return new ToDoEvent(cursor.getString(1), dateTime, cursor.getInt(0));
+    }
 
     public void setName(String name)
     {
@@ -52,6 +58,22 @@ public class ToDoEvent implements Serializable
     public void setEventID(int eventID)
     {
         this.eventID = eventID;
+    }
+
+    public static List<ToDoEvent> getAllEvents(Context context)
+    {
+        ToDoDB db = new ToDoDB(context);
+        List<ToDoEvent> events = new ArrayList<>();
+        Cursor cursor = db.selectAll();
+        while (cursor.moveToNext())
+        {
+            String name = cursor.getString(1);
+            String date = cursor.getString(2);
+            ToDoEvent event = new ToDoEvent(name, LocalDateTime.parse(date, DateTimeFormat.dateTimeFormat), 0);
+            events.add(event);
+        }
+
+        return events;
     }
 
     @Override

@@ -10,34 +10,76 @@
         android:id="@+id/tbCreateTask"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/etTaskName"
-        android:hint="@string/hintTaskName"
+    <TextView
+        android:id="@+id/tvTaskName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tbCreateTask"
-        android:importantForAutofill="no"
-        android:inputType="textAutoCorrect" />
+        android:text="@string/taskName"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/tbCreateTask" />
 
-    <DatePicker
-        android:id="@+id/dpTaskDate"
+    <EditText
+        android:id="@+id/etTaskName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="yes"
+        android:inputType="textAutoCorrect"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskName" />
+
+    <Button
+        android:id="@+id/bTaskDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/bTaskDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etTaskName" />
+
+    <EditText
+        android:id="@+id/etTaskDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="@string/blank"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bTaskDate"
+        />
+
+    <Button
+        android:id="@+id/bTaskTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bTaskTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etTaskDate" />
+
+    <EditText
+        android:id="@+id/etTaskTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="yes"
+        android:textSize="24sp"
+        android:text="@string/blank"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bTaskTime"
+        />
 
     <Button
         android:id="@+id/bDone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/DoneButton"
-        app:layout_constraintTop_toBottomOf="@id/dpTaskDate"/>
+        app:layout_constraintTop_toBottomOf="@id/etTaskTime"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.List;
+
+//NOTE: Warning on Android Developer website for using SQLite, recommends Room
+// if database gets big and slows down, use room: https://developer.android.com/training/data-storage/room/
 public class ToDoDB extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "ToDo.db";
@@ -52,7 +56,7 @@ public class ToDoDB extends SQLiteOpenHelper
 
         ContentValues values = new ContentValues();
         values.put(COL_2, event.getName());
-        values.put(COL_3, event.getRemindTime().toString());
+        values.put(COL_3, DateTimeFormat.formatDateTime(event.getRemindTime().toString()));
 
         return db.insert(TABLE_NAME, null, values) != -1;
     }
@@ -62,7 +66,7 @@ public class ToDoDB extends SQLiteOpenHelper
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_2, event.getName());
-        values.put(COL_3, event.getRemindTime().toString());
+        values.put(COL_3, DateTimeFormat.formatDateTime(event.getRemindTime().toString()));
         String selection = COL_1 + " = ?";
         String[] selectionArgs = {String.valueOf(oldEventID)};
         return db.update(TABLE_NAME, values, selection, selectionArgs) != -1;
@@ -83,5 +87,11 @@ public class ToDoDB extends SQLiteOpenHelper
         String selection = "task_id = ?";
         String[] selectionArgs = {String.valueOf(eventID)};
         return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+    }
+
+    public Cursor selectAll()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.query(TABLE_NAME, projection, null, null, null, null, null);
     }
 }

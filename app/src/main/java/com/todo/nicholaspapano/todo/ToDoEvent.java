@@ -36,14 +36,6 @@ public class ToDoEvent implements Serializable
         return eventID;
     }
 
-    public ToDoEvent getEventByID(int eventID, Context context)
-    {
-        ToDoDB db = new ToDoDB(context);
-        Cursor cursor = db.selectEventByID(eventID);
-        LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(2));
-
-        return new ToDoEvent(cursor.getString(1), dateTime, cursor.getInt(0));
-    }
 
     public void setName(String name)
     {
@@ -60,6 +52,18 @@ public class ToDoEvent implements Serializable
         this.eventID = eventID;
     }
 
+    public static ToDoEvent getEventByID(int eventID, Context context)
+    {
+        ToDoDB db = new ToDoDB(context);
+        Cursor cursor = db.selectEventByID(eventID);
+        while (cursor.moveToNext())
+        {
+            LocalDateTime dateTime = LocalDateTime.parse(cursor.getString(2), DateTimeFormat.dateTimeFormat);
+            return new ToDoEvent(cursor.getString(1), dateTime, cursor.getInt(0));
+        }
+        return null;
+    }
+
     public static List<ToDoEvent> getAllEvents(Context context)
     {
         ToDoDB db = new ToDoDB(context);
@@ -67,9 +71,10 @@ public class ToDoEvent implements Serializable
         Cursor cursor = db.selectAll();
         while (cursor.moveToNext())
         {
+            int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String date = cursor.getString(2);
-            ToDoEvent event = new ToDoEvent(name, LocalDateTime.parse(date, DateTimeFormat.dateTimeFormat), 0);
+            ToDoEvent event = new ToDoEvent(name, LocalDateTime.parse(date, DateTimeFormat.dateTimeFormat), id);
             events.add(event);
         }
 

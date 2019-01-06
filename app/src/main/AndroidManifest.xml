@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateTaskActivity" />
-        <activity android:name=".ToDoCard"></activity>
+        <activity android:name=".ToDoCard" />
+        <activity android:name=".UpdateTaskActivity"></activity>
     </application>
 
 </manifest>

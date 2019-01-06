@@ -25,12 +25,12 @@ public class ToDoDB extends SQLiteOpenHelper
             COL_3,
     };
 
-    private static final String SQL_CREATE_ENTRIES = "create table " + TABLE_NAME+ " (" +
+    private static final String SQL_CREATE_ENTRIES = "create table " + TABLE_NAME + " (" +
             COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_2 + " TEXT, " +
             COL_3 + " TEXT)";
 
-    private static final String SQL_DROP_ENTRIES = "drop table if exists "+ TABLE_NAME;
+    private static final String SQL_DROP_ENTRIES = "drop table if exists " + TABLE_NAME;
 
     public ToDoDB(Context context)
     {
@@ -83,8 +83,8 @@ public class ToDoDB extends SQLiteOpenHelper
 
     public Cursor selectEventByID(int eventID)
     {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selection = "task_id = ?";
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = "eventID = ?";
         String[] selectionArgs = {String.valueOf(eventID)};
         return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
     }

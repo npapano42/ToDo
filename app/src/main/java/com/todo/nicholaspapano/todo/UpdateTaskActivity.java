@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-public class CreateTaskActivity extends AppCompatActivity
+public class UpdateTaskActivity extends AppCompatActivity
 {
     Toolbar tbCreateTask;
     EditText etTaskName, etTaskDate, etTaskTime;
@@ -44,7 +44,16 @@ public class CreateTaskActivity extends AppCompatActivity
         bTaskTime = findViewById(R.id.bTaskTime);
 
         setSupportActionBar(tbCreateTask);
-        getSupportActionBar().setTitle("Create a task");
+        getSupportActionBar().setTitle("Edit task");
+        final int oldTaskId = getIntent().getExtras().getInt("oldTaskId");
+
+
+        ToDoDB taskDB = new ToDoDB(UpdateTaskActivity.this);
+        ToDoEvent oldEvent = ToDoEvent.getEventByID(oldTaskId, UpdateTaskActivity.this);
+
+        etTaskName.setText(oldEvent.getName());
+        etTaskDate.setText(DateTimeFormat.formatDate(oldEvent.getRemindTime().toString()));
+        etTaskTime.setText(DateTimeFormat.formatTime(oldEvent.getRemindTime().toString()));
 
         bTaskDate.setOnClickListener(new View.OnClickListener()
         {
@@ -53,7 +62,7 @@ public class CreateTaskActivity extends AppCompatActivity
             {
                 LocalDateTime date = LocalDateTime.now();
                 DatePickerDialog datePicker = new DatePickerDialog(
-                        CreateTaskActivity.this,
+                        UpdateTaskActivity.this,
                         dateSetListener,
                         date.getYear(),
                         date.getMonthValue() -1,
@@ -70,6 +79,7 @@ public class CreateTaskActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth)
             {
+
                 selDate = String.format(Locale.US, "%02d", ++month) + "/" +
                         String.format(Locale.US, "%02d", dayOfMonth) + "/" +
                         String.format(Locale.US, "%04d", year);
@@ -85,7 +95,7 @@ public class CreateTaskActivity extends AppCompatActivity
             {
                 LocalDateTime time = LocalDateTime.now();
                 TimePickerDialog timePicker = new TimePickerDialog(
-                        CreateTaskActivity.this,
+                        UpdateTaskActivity.this,
                         timeSetListener,
                         time.getHour(),
                         time.getMinute(),
@@ -128,35 +138,36 @@ public class CreateTaskActivity extends AppCompatActivity
 
                 if (etTaskName.getText().length() == 0)
                 {
-                    Toast.makeText(CreateTaskActivity.this, "No task name specified!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateTaskActivity.this, "No task name specified!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (etTaskDate.getText().length() == 0)
                 {
-                    Toast.makeText(CreateTaskActivity.this, "No task date specified!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateTaskActivity.this, "No task date specified!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (etTaskTime.getText().length() == 0)
                 {
-                    Toast.makeText(CreateTaskActivity.this, "No task time specified!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateTaskActivity.this, "No task time specified!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (LocalDateTime.parse(dateTime, DateTimeFormat.dateTimeFormat).isBefore(LocalDateTime.now()))
                 {
-                    Toast.makeText(CreateTaskActivity.this, "Reminder can't be in the past!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateTaskActivity.this, "Reminder can't be in the past!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 ToDoEvent event = new ToDoEvent(etTaskName.getText().toString(), LocalDateTime.parse(dateTime, DateTimeFormat.dateTimeFormat), 0);
-                ToDoDB db = new ToDoDB(CreateTaskActivity.this);
-                if (db.insert(event))
+
+                ToDoDB db = new ToDoDB(UpdateTaskActivity.this);
+                if (db.update(event, oldTaskId))
                 {
-                    Toast.makeText(CreateTaskActivity.this, "Reminder edited successfully", Toast.LENGTH_SHORT).show();
-                    Intent intentHome = new Intent(CreateTaskActivity.this, HomeActivity.class);
+                    Toast.makeText(UpdateTaskActivity.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
+                    Intent intentHome = new Intent(UpdateTaskActivity.this, HomeActivity.class);
                     startActivity(intentHome);
                 }
                 else
-                    Toast.makeText(CreateTaskActivity.this, "Error while editing reminder", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateTaskActivity.this, "Error while saving reminder", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(tbHome);
         getSupportActionBar().setTitle("Reminder List");
 
+
         List<ToDoEvent> events = ToDoEvent.getAllEvents(HomeActivity.this);
         setRecyclerViewAdapter(events);
 

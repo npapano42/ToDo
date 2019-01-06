@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_to_do_card, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_to_do_card, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -39,7 +40,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder>
     {
         ToDoEvent event = tasks.get(holder.getAdapterPosition());
         holder.txtTaskName.setText(event.getName());
-        holder.txtTaskTime.setText(DateTimeFormat.formatDateTime(event.getRemindTime().toString()));
+        String dateText = DateTimeFormat.formatReadableDate(event).substring(0,5) + " @ " + DateTimeFormat.formatReadableTime(event);
+        holder.txtTaskTime.setText(dateText);
         final int taskId = event.getEventID();
 
         // when a event is pressed, display info
@@ -61,46 +63,51 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder>
                                 dialogInterface.cancel();
                             }
                         })
-                        .setMessage("Reminder at: " + DateTimeFormat.formatDateTime(event.getRemindTime().toString()));
+                        .setMessage("Reminder at: " + DateTimeFormat.formatReadableDateTime(event));
                 alertDialog.show();
             }
         });
 
-//        holder.view.setOnLongClickListener(new View.OnLongClickListener()
-//        {
-//            @Override
-//            public boolean onLongClick(final View view)
-//            {
-//                PopupMenu popupMenu = new PopupMenu(context, view);
-//                popupMenu.getMenuInflater().inflate(R.menu.menu_add_remove, popupMenu.getMenu());
-//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        if(item.getItemId() == R.id.menuItem_editTask){
-//                            Intent intent = new Intent(context, UpdateTaskActivity.class);
-//                            intent.putExtra("oldTaskId", taskId);
-//                            context.startActivity(intent);
-//                            notifyItemChanged(holder.getAdapterPosition());
-//                        }else if(item.getItemId() == R.id.menuItem_removeTask){
-//                            TaskDB taskDB = new TaskDB(context);
-//                            if(taskDB.delete(taskId)){
-//                                tasks.remove(holder.getAdapterPosition());
-//                                notifyItemRemoved(holder.getAdapterPosition());
-//                                Snackbar.make(view, "Task Removed", Snackbar.LENGTH_LONG)
-//                                        .setAction("Action", null).show();
-//                            }
-//                            else{
-//                                Snackbar.make(view, "Task not removed", Snackbar.LENGTH_LONG)
-//                                        .setAction("Action", null).show();
-//                            }
-//                        }
-//                        return false;
-//                    }
-//                });
-//                popupMenu.show();
-//                return false;
-//            }
-//        });
+        holder.view.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(final View view)
+            {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_card_edit_remove, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        if (item.getItemId() == R.id.menuItem_editEvent)
+                        {
+                            Intent intent = new Intent(context, UpdateTaskActivity.class);
+                            intent.putExtra("oldTaskId", taskId);
+                            context.startActivity(intent);
+                            notifyItemChanged(holder.getAdapterPosition());
+                        }
+                        else if (item.getItemId() == R.id.menuItem_removeEvent)
+                        {
+                            ToDoDB db = new ToDoDB(context);
+                            if (db.delete(taskId))
+                            {
+                                tasks.remove(holder.getAdapterPosition());
+                                notifyItemRemoved(holder.getAdapterPosition());
+                                Toast.makeText(view.getContext(), "Reminder removed successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(view.getContext(), "ERROR: Reminder not removed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+                return false;
+            }
+        });
     }
 
 

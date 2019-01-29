@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class UpdateTaskActivity extends AppCompatActivity
 {
-    Toolbar tbCreateTask;
+    Toolbar tbEditTask;
     EditText etTaskName, etTaskDate, etTaskTime;
     Button bDone, bTaskDate, bTaskTime;
 
@@ -35,7 +35,7 @@ public class UpdateTaskActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
 
-        tbCreateTask = findViewById(R.id.tbCreateTask);
+        tbEditTask = findViewById(R.id.tbCreateTask);
         etTaskName = findViewById(R.id.etTaskName);
         etTaskDate = findViewById(R.id.etTaskDate);
         etTaskTime = findViewById(R.id.etTaskTime);
@@ -43,8 +43,10 @@ public class UpdateTaskActivity extends AppCompatActivity
         bTaskDate = findViewById(R.id.bTaskDate);
         bTaskTime = findViewById(R.id.bTaskTime);
 
-        setSupportActionBar(tbCreateTask);
-        getSupportActionBar().setTitle("Edit task");
+        tbEditTask.setTitle("Edit task");
+        setSupportActionBar(tbEditTask);
+
+
         final int oldTaskId = getIntent().getExtras().getInt("oldTaskId");
 
 
@@ -162,12 +164,12 @@ public class UpdateTaskActivity extends AppCompatActivity
                 ToDoDB db = new ToDoDB(UpdateTaskActivity.this);
                 if (db.update(event, oldTaskId))
                 {
-                    Toast.makeText(UpdateTaskActivity.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateTaskActivity.this, "Reminder edited successfully", Toast.LENGTH_SHORT).show();
                     Intent intentHome = new Intent(UpdateTaskActivity.this, HomeActivity.class);
                     startActivity(intentHome);
                 }
                 else
-                    Toast.makeText(UpdateTaskActivity.this, "Error while saving reminder", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UpdateTaskActivity.this, "Error while editing reminder", Toast.LENGTH_LONG).show();
             }
         });
     }

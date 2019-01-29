@@ -2,6 +2,10 @@ package com.todo.nicholaspapano.todo;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -43,8 +47,8 @@ public class CreateTaskActivity extends AppCompatActivity
         bTaskDate = findViewById(R.id.bTaskDate);
         bTaskTime = findViewById(R.id.bTaskTime);
 
+        tbCreateTask.setTitle("Create a task");
         setSupportActionBar(tbCreateTask);
-        getSupportActionBar().setTitle("Create a task");
 
         bTaskDate.setOnClickListener(new View.OnClickListener()
         {
@@ -119,6 +123,7 @@ public class CreateTaskActivity extends AppCompatActivity
             }
         };
 
+
         bDone.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -151,13 +156,26 @@ public class CreateTaskActivity extends AppCompatActivity
                 ToDoDB db = new ToDoDB(CreateTaskActivity.this);
                 if (db.insert(event))
                 {
-                    Toast.makeText(CreateTaskActivity.this, "Reminder edited successfully", Toast.LENGTH_SHORT).show();
+                    createJob(event);
+                    Toast.makeText(CreateTaskActivity.this, "Reminder added successfully", Toast.LENGTH_SHORT).show();
                     Intent intentHome = new Intent(CreateTaskActivity.this, HomeActivity.class);
                     startActivity(intentHome);
                 }
                 else
-                    Toast.makeText(CreateTaskActivity.this, "Error while editing reminder", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateTaskActivity.this, "Error while saving reminder", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void createJob(ToDoEvent event)
+    {
+        JobInfo job = new JobInfo.Builder(event.getEventID(), new ComponentName(this, EventNotificationJobService.class))
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build();
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+        jobScheduler.schedule(job);
+//        Toast.makeText(CreateTaskActivity.this, "Job added :P", Toast.LENGTH_SHORT).show();
+
     }
 }

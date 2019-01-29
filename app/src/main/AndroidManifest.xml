@@ -21,6 +21,11 @@
         <activity android:name=".CreateTaskActivity" />
         <activity android:name=".ToDoCard" />
         <activity android:name=".UpdateTaskActivity"></activity>
+
+        <service
+            android:name=".EventNotificationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
     </application>
 
 </manifest>

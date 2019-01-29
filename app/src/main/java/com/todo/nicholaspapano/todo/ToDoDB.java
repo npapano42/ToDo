@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.List;
-
 //NOTE: Warning on Android Developer website for using SQLite, recommends Room
 // if database gets big and slows down, use room: https://developer.android.com/training/data-storage/room/
 public class ToDoDB extends SQLiteOpenHelper
